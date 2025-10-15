@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗺️ Pruebas API de Grafos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .response {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #333;
+        }
+        .loading {
+            color: #667eea;
+            font-style: italic;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        select {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 2px solid #667eea;
+            font-size: 16px;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.online {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗺️ Pruebas API de Grafos</h1>
+        <p class="subtitle">Prueba los endpoints de tu aplicación Spring Boot + Neo4j</p>
+        
+        <div class="section">
+            <h2>🔌 Estado del Servidor</h2>
+            <button onclick="checkServer()">Verificar Conexión</button>
+            <span id="serverStatus"></span>
+            <div id="serverResponse" class="response" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h2>1️⃣ Cargar Datos Iniciales</h2>
+            <p>Carga las ciudades y rutas en la base de datos Neo4j</p>
+            <button onclick="seedData()">🌱 Seed Database</button>
+            <div id="seedResponse" class="response" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h2>2️⃣ Listar Ciudades</h2>
+            <button onclick="getCities()">📋 Ver Todas las Ciudades</button>
+            <div id="citiesResponse" class="response" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h2>3️⃣ Búsqueda en Amplitud (BFS)</h2>
+            <p>Recorre el grafo usando Breadth-First Search</p>
+            <select id="bfsCity">
+                <option value="CABA">CABA</option>
+                <option value="La Plata">La Plata</option>
+                <option value="Rosario">Rosario</option>
+                <option value="Córdoba">Córdoba</option>
+                <option value="Mendoza">Mendoza</option>
+                <option value="Santa Fe">Santa Fe</option>
+                <option value="Paraná">Paraná</option>
+                <option value="Mar del Plata">Mar del Plata</option>
+                <option value="Bahía Blanca">Bahía Blanca</option>
+                <option value="Neuquén">Neuquén</option>
+                <option value="San Luis">San Luis</option>
+                <option value="San Juan">San Juan</option>
+            </select>
+            <button onclick="testBFS()">🔍 Ejecutar BFS</button>
+            <div id="bfsResponse" class="response" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h2>4️⃣ Búsqueda en Profundidad (DFS)</h2>
+            <p>Recorre el grafo usando Depth-First Search</p>
+            <select id="dfsCity">
+                <option value="CABA">CABA</option>
+                <option value="La Plata">La Plata</option>
+                <option value="Rosario">Rosario</option>
+                <option value="Córdoba">Córdoba</option>
+                <option value="Mendoza">Mendoza</option>
+                <option value="Santa Fe">Santa Fe</option>
+                <option value="Paraná">Paraná</option>
+                <option value="Mar del Plata">Mar del Plata</option>
+                <option value="Bahía Blanca">Bahía Blanca</option>
+                <option value="Neuquén">Neuquén</option>
+                <option value="San Luis">San Luis</option>
+                <option value="San Juan">San Juan</option>
+            </select>
+            <button onclick="testDFS()">🔍 Ejecutar DFS</button>
+            <div id="dfsResponse" class="response" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:8080/graph';
+
+        async function makeRequest(url, method = 'GET') {
+            try {
+                const response = await fetch(url, { method });
+                const data = await response.json();
+                return { success: true, data };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function displayResponse(elementId, response) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            
+            if (response.success) {
+                element.innerHTML = `<span class="success">✅ Éxito</span><pre>${JSON.stringify(response.data, null, 2)}</pre>`;
+            } else {
+                element.innerHTML = `<span class="error">❌ Error: ${response.error}</span>`;
+            }
+        }
+
+        async function checkServer() {
+            const statusEl = document.getElementById('serverStatus');
+            statusEl.innerHTML = '<span class="status">Verificando...</span>';
+            
+            const response = await makeRequest(`${BASE_URL}/cities`);
+            
+            if (response.success) {
+                statusEl.innerHTML = '<span class="status online">🟢 ONLINE</span>';
+            } else {
+                statusEl.innerHTML = '<span class="status offline">🔴 OFFLINE</span>';
+            }
+        }
+
+        async function seedData() {
+            document.getElementById('seedResponse').innerHTML = '<span class="loading">⏳ Cargando datos...</span>';
+            document.getElementById('seedResponse').style.display = 'block';
+            
+            const response = await makeRequest(`${BASE_URL}/seed/basic`, 'POST');
+            displayResponse('seedResponse', response);
+        }
+
+        async function getCities() {
+            document.getElementById('citiesResponse').innerHTML = '<span class="loading">⏳ Obteniendo ciudades...</span>';
+            document.getElementById('citiesResponse').style.display = 'block';
+            
+            const response = await makeRequest(`${BASE_URL}/cities`);
+            displayResponse('citiesResponse', response);
+        }
+
+        async function testBFS() {
+            const city = document.getElementById('bfsCity').value;
+            document.getElementById('bfsResponse').innerHTML = '<span class="loading">⏳ Ejecutando BFS...</span>';
+            document.getElementById('bfsResponse').style.display = 'block';
+            
+            const response = await makeRequest(`${BASE_URL}/bfs?start=${encodeURIComponent(city)}`);
+            displayResponse('bfsResponse', response);
+        }
+
+        async function testDFS() {
+            const city = document.getElementById('dfsCity').value;
+            document.getElementById('dfsResponse').innerHTML = '<span class="loading">⏳ Ejecutando DFS...</span>';
+            document.getElementById('dfsResponse').style.display = 'block';
+            
+            const response = await makeRequest(`${BASE_URL}/dfs?start=${encodeURIComponent(city)}`);
+            displayResponse('dfsResponse', response);
+        }
+
+        // Verificar estado al cargar
+        checkServer();
+    </script>
+</body>
+</html>

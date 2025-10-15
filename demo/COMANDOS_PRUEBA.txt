@@ -1,0 +1,35 @@
+# ========================================
+# 🧪 COMANDOS CURL PARA PROBAR LA API
+# ========================================
+# Copia y pega estos comandos en tu terminal PowerShell
+
+# 1. CARGAR DATOS INICIALES
+# --------------------------
+curl -X POST http://localhost:8080/graph/seed/basic
+
+# 2. LISTAR TODAS LAS CIUDADES
+# -----------------------------
+curl http://localhost:8080/graph/cities
+
+# 3. BÚSQUEDA EN AMPLITUD (BFS) - Desde CABA
+# --------------------------------------------
+curl "http://localhost:8080/graph/bfs?start=CABA"
+
+# 4. BÚSQUEDA EN AMPLITUD (BFS) - Desde Rosario
+# -----------------------------------------------
+curl "http://localhost:8080/graph/bfs?start=Rosario"
+
+# 5. BÚSQUEDA EN PROFUNDIDAD (DFS) - Desde CABA
+# -----------------------------------------------
+curl "http://localhost:8080/graph/dfs?start=CABA"
+
+# 6. BÚSQUEDA EN PROFUNDIDAD (DFS) - Desde Mendoza
+# --------------------------------------------------
+curl "http://localhost:8080/graph/dfs?start=Mendoza"
+
+# ========================================
+# 🌐 TAMBIÉN PUEDES USAR EL NAVEGADOR:
+# ========================================
+# http://localhost:8080/graph/cities
+# http://localhost:8080/graph/bfs?start=CABA
+# http://localhost:8080/graph/dfs?start=Rosario

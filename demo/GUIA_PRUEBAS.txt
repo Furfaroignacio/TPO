@@ -1,0 +1,112 @@
+# ========================================
+# 📖 GUÍA COMPLETA DE PRUEBAS
+# ========================================
+
+## 🚀 PASO 1: INICIAR LA APLICACIÓN
+-----------------------------------
+1. Abre una terminal PowerShell
+2. Ve al directorio del proyecto:
+   cd c:\Users\furfa\OneDrive\Escritorio\TPO\tpo\demo
+
+3. Ejecuta:
+   .\mvnw.cmd spring-boot:run
+
+4. Espera hasta ver el mensaje:
+   "Started DemoApplication in X.XXX seconds"
+
+
+## 🧪 PASO 2: PROBAR LA API
+-----------------------------------
+
+### OPCIÓN A: Usar el HTML Interactivo (MÁS FÁCIL) 🌟
+1. Abre el archivo: test-api.html en tu navegador
+2. Haz clic en los botones para probar cada endpoint
+3. Verás las respuestas en la misma página
+
+### OPCIÓN B: Usar PowerShell Script
+1. En una NUEVA terminal PowerShell, ejecuta:
+   .\test-api.ps1
+
+### OPCIÓN C: Comandos curl individuales
+Copia estos comandos uno por uno en PowerShell:
+
+# 1. Cargar datos
+curl -X POST http://localhost:8080/graph/seed/basic
+
+# 2. Ver ciudades
+curl http://localhost:8080/graph/cities
+
+# 3. BFS desde CABA
+curl "http://localhost:8080/graph/bfs?start=CABA"
+
+# 4. DFS desde CABA
+curl "http://localhost:8080/graph/dfs?start=CABA"
+
+### OPCIÓN D: Desde el navegador web
+Abre estas URLs en tu navegador:
+
+http://localhost:8080/graph/cities
+http://localhost:8080/graph/bfs?start=CABA
+http://localhost:8080/graph/dfs?start=Rosario
+
+
+## 📊 QUÉ ESPERAR DE CADA ENDPOINT
+-----------------------------------
+
+### POST /graph/seed/basic
+Respuesta: "Seed OK"
+Función: Carga 12 ciudades y sus rutas en Neo4j
+
+### GET /graph/cities
+Respuesta: Lista JSON de ciudades con sus datos
+Ejemplo:
+[
+  {
+    "name": "CABA",
+    "lat": -34.6037,
+    "lon": -58.3816,
+    "population": 2890000,
+    "routes": [...]
+  },
+  ...
+]
+
+### GET /graph/bfs?start=CABA
+Respuesta: Array de ciudades en orden de visita BFS
+Ejemplo: ["CABA", "La Plata", "Rosario", "Mar del Plata", ...]
+
+### GET /graph/dfs?start=CABA
+Respuesta: Array de ciudades en orden de visita DFS
+Ejemplo: ["CABA", "La Plata", "Mar del Plata", "Rosario", ...]
+
+
+## 🔍 VERIFICAR QUE TODO FUNCIONA
+-----------------------------------
+1. ✅ La aplicación inició sin errores
+2. ✅ Puedes acceder a http://localhost:8080/graph/cities
+3. ✅ El endpoint seed carga datos correctamente
+4. ✅ BFS y DFS retornan listas de ciudades
+
+
+## 🐛 SOLUCIÓN DE PROBLEMAS
+-----------------------------------
+
+Problema: "Connection refused"
+Solución: La app no está corriendo. Ejecuta mvnw spring-boot:run
+
+Problema: "404 Not Found"
+Solución: Verifica la URL, debe incluir /graph/
+
+Problema: curl no funciona
+Solución: Usa el HTML (test-api.html) o Invoke-RestMethod
+
+Problema: "Empty array" en BFS/DFS
+Solución: Primero ejecuta POST /graph/seed/basic
+
+
+## 📝 ARCHIVOS CREADOS PARA TI
+-----------------------------------
+✅ test-api.html         → Interfaz web visual
+✅ test-api.ps1          → Script PowerShell automatizado
+✅ COMANDOS_PRUEBA.txt   → Este archivo con comandos curl
+✅ GUIA_PRUEBAS.txt      → Guía completa (este archivo)

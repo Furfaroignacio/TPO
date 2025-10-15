@@ -1,0 +1,66 @@
+# ============================================
+# 🚀 SOLUCIÓN AL PROBLEMA "OFFLINE"
+# ============================================
+
+## PROBLEMA:
+La aplicación se detiene cuando ejecutas comandos curl
+porque Windows cancela el proceso al presionar Ctrl+C.
+
+## SOLUCIÓN:
+Usa el archivo INICIAR-APP.bat que acabo de crear.
+
+## 📋 PASOS PARA INICIAR CORRECTAMENTE:
+
+1. Haz DOBLE CLIC en el archivo:
+   
+   📄 INICIAR-APP.bat
+   
+   Se abrirá una NUEVA VENTANA de consola
+
+2. ESPERA hasta ver este mensaje:
+   
+   "Started DemoApplication in X.XXX seconds"
+   "✅ Conexión a Neo4j establecida correctamente"
+
+3. NO CIERRES esa ventana mientras uses la aplicación
+
+4. Ahora RECARGA la página HTML:
+   
+   📄 test-api.html
+   
+   (Presiona F5 en tu navegador)
+
+5. El estado debería cambiar a:
+   
+   🟢 ONLINE
+
+## 🧪 PROBAR QUE FUNCIONA:
+
+Opción A - En el HTML:
+- Haz clic en "Verificar Conexión"
+- Si dice "🟢 ONLINE" ya puedes usar todos los botones
+
+Opción B - En PowerShell (en una NUEVA terminal):
+curl http://localhost:8080/graph/cities
+
+Opción C - En el navegador:
+http://localhost:8080/graph/cities
+
+## ⚠️ IMPORTANTE:
+
+✅ MANTÉN ABIERTA la ventana de INICIAR-APP.bat
+❌ NO ejecutes "mvnw spring-boot:run" en esta terminal
+❌ NO presiones Ctrl+C en la ventana de la app
+
+## 🔧 SI AÚN NO FUNCIONA:
+
+1. Verifica que la ventana de INICIAR-APP.bat esté abierta
+2. Busca el mensaje "Started DemoApplication"
+3. Espera 20-30 segundos después de ver ese mensaje
+4. Recarga el HTML (F5)
+5. Si hay errores en la ventana de la app, avísame
+
+## 📱 PARA DETENER LA APLICACIÓN:
+
+Cierra la ventana de INICIAR-APP.bat
+o presiona Ctrl+C ahí
